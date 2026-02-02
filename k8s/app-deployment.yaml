@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: otel-demo-app
-        image: <your-docker-image>:latest
+        image: 954692414134.dkr.ecr.ap-south-1.amazonaws.com/otel-demo-app:latest
         ports:
         - containerPort: 5000
         env:
