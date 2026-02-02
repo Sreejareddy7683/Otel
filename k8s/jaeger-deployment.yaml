@@ -28,9 +28,11 @@ spec:
   selector:
     app: jaeger
   ports:
-    - protocol: TCP
+    - name: jaeger-ui
+      protocol: TCP
       port: 16686
       targetPort: 16686
-    - protocol: TCP
+    - name: jaeger-collector
+      protocol: TCP
       port: 14268
       targetPort: 14268
