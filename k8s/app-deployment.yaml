@@ -26,7 +26,7 @@ kind: Service
 metadata:
   name: otel-demo-app
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: otel-demo-app
   ports:
