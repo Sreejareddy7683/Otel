@@ -18,8 +18,9 @@ spec:
         args:
           - "--config=/conf/otel-collector-config.yaml"
         ports:
-        - containerPort: 14268
-        - containerPort: 8889
+        - containerPort: 4317   # OTLP gRPC
+        - containerPort: 4318   # OTLP HTTP
+        - containerPort: 8889   # Prometheus
         volumeMounts:
         - name: otel-config
           mountPath: /conf
