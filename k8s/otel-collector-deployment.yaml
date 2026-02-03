@@ -14,26 +14,16 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: otel/opentelemetry-collector:latest
+        image: otel/opentelemetry-collector-contrib:0.96.0
+        args:
+          - "--config=/conf/otel-collector-config.yaml"
         ports:
         - containerPort: 4317
+        - containerPort: 8889
         volumeMounts:
-        - name: otel-collector-config
-          mountPath: /etc/otel-collector-config.yaml
-          subPath: otel-collector-config.yaml
+        - name: otel-config
+          mountPath: /conf
       volumes:
-      - name: otel-collector-config
+      - name: otel-config
         configMap:
           name: otel-collector-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: otel-collector
-spec:
-  selector:
-    app: otel-collector
-  ports:
-    - protocol: TCP
-      port: 4317
-      targetPort: 4317

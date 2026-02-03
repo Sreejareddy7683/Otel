@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+      - name: loadgen
+        image: curlimages/curl
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - |
+            while true; do
+              curl http://otel-demo-app/
+              curl http://otel-demo-app/api/users
+              curl http://otel-demo-app/api/orders
+              curl http://otel-demo-app/api/slow
+              sleep 2
+            done
