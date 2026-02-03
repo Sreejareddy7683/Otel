@@ -1,55 +1,63 @@
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 0.0.0.0:4317
-      http:
-        endpoint: 0.0.0.0:4318
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  labels:
+    app: otel-collector
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
 
-processors:
-  memory_limiter:
-    check_interval: 1s
-    limit_mib: 512
-  batch:
-  resource:
-    attributes:
-      - key: service.environment
-        value: production
-        action: upsert
+    processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 512
+      batch:
+      resource:
+        attributes:
+          - key: service.environment
+            value: production
+            action: upsert
 
-exporters:
-  jaeger:
-    endpoint: http://jaeger:14268/api/traces
-    tls:
-      insecure: true
+    exporters:
+      jaeger:
+        endpoint: http://jaeger:14268/api/traces
+        tls:
+          insecure: true
 
-  loki:
-    endpoint: http://loki:3100/loki/api/v1/push
+      loki:
+        endpoint: http://loki:3100/loki/api/v1/push
 
-  prometheus:
-    endpoint: 0.0.0.0:8889
+      prometheus:
+        endpoint: 0.0.0.0:8889
 
-  logging:
-    verbosity: normal
+      logging:
+        verbosity: normal
 
-extensions:
-  health_check:
-    endpoint: 0.0.0.0:13133
+    extensions:
+      health_check:
+        endpoint: 0.0.0.0:13133
 
-service:
-  extensions: [health_check]
-  pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [memory_limiter, batch, resource]
-      exporters: [jaeger, logging]
+    service:
+      extensions: [health_check]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, batch, resource]
+          exporters: [jaeger, logging]
 
-    metrics:
-      receivers: [otlp]
-      processors: [memory_limiter, batch, resource]
-      exporters: [prometheus, logging]
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, batch, resource]
+          exporters: [prometheus, logging]
 
-    logs:
-      receivers: [otlp]
-      processors: [memory_limiter, batch, resource]
-      exporters: [loki, logging]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, batch, resource]
+          exporters: [loki, logging]
