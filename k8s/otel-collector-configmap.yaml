@@ -30,7 +30,7 @@ data:
         endpoint: http://loki:3100/loki/api/v1/push
 
       otlp/jaeger:
-        endpoint: jaeger:4317
+        endpoint: jaeger:14268
         tls:
           insecure: true
 

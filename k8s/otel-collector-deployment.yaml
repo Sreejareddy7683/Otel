@@ -18,7 +18,7 @@ spec:
         args:
           - "--config=/conf/otel-collector-config.yaml"
         ports:
-        - containerPort: 4317
+        - containerPort: 14268
         - containerPort: 8889
         volumeMounts:
         - name: otel-config
